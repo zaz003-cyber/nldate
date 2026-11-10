@@ -66,12 +66,14 @@ def parse(s: str, today: date | None = None) -> date:
 
     # Absolute dates: December 1st, 2025
     match = re.fullmatch(
-        r"([a-z]+) (\d{1,2})(?:st|nd|rd|th)?,? (\d{4})",
+        r"([a-z]{3}\.|[a-z]+) (\d{1,2})(?:st|nd|rd|th)?,? (\d{4})",
         expression,
     )
-    if match and match.group(1) in MONTHS:
-        month = MONTHS[match.group(1)]
-        return date(int(match.group(3)), month, int(match.group(2)))
+    if match:
+        month, day, year = match.groups()
+        month = month.removesuffix(".")
+        if month in MONTHS:
+            return date(int(year), MONTHS[month], int(day))
 
     # Day-month-year format
     match = re.fullmatch(
