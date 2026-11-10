@@ -31,6 +31,10 @@ MONTHS = {
     )
 }
 
+
+MONTHS.update({name[:3]: number for name, number in list(MONTHS.items())})
+
+
 NUMBERS = {
     "one": 1,
     "two": 2,
@@ -68,6 +72,18 @@ def parse(s: str, today: date | None = None) -> date:
     if match and match.group(1) in MONTHS:
         month = MONTHS[match.group(1)]
         return date(int(match.group(3)), month, int(match.group(2)))
+
+    # Day-month-year format
+    match = re.fullmatch(
+        r"(\d{1,2})(?:st|nd|rd|th)? ([a-z]+),? (\d{4})",
+        expression,
+    )
+    if match and match.group(2) in MONTHS:
+        return date(
+            int(match.group(3)),
+            MONTHS[match.group(2)],
+            int(match.group(1)),
+        )
 
     # Relative weekdays
     match = re.fullmatch(
