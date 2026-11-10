@@ -123,8 +123,9 @@ def parse(s: str, today: date | None = None) -> date:
         return today + timedelta(days=days)
 
     # ISO date format
-    if re.fullmatch(r"\d{4}[-/]\d{2}[-/]\d{2}", expression):
-        return date.fromisoformat(expression.replace("/", "-"))
+    if re.fullmatch(r"\d{4}[-/]\d{1,2}[-/]\d{1,2}", expression):
+        year, month, day = map(int, re.split(r"[-/]", expression))
+        return date(year, month, day)
 
     result = parse_offset(expression, today, parse)
     if result is not None:
