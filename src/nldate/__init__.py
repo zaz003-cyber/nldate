@@ -129,7 +129,9 @@ def parse(s: str, today: date | None = None) -> date:
         "tomorrow": 1,
         "yesterday": -1,
         "day after tomorrow": 2,
+        "the day after tomorrow": 2,
         "day before yesterday": -2,
+        "the day before yesterday": -2,
     }
     if expression in simple:
         return today + timedelta(days=simple[expression])

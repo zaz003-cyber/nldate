@@ -42,3 +42,17 @@ def test_common_formats(expression: str, expected: date) -> None:
 def test_invalid_formats(expression: str) -> None:
     with pytest.raises(ValueError):
         parse(expression, today=REFERENCE)
+
+
+@pytest.mark.parametrize(
+    ("expression", "expected"),
+    [
+        ("the day after tomorrow", date(2026, 11, 13)),
+        ("the day before yesterday", date(2026, 11, 9)),
+        ("day after tomorrow", date(2026, 11, 13)),
+        ("day before yesterday", date(2026, 11, 9)),
+        ("THE DAY AFTER TOMORROW", date(2026, 11, 13)),
+    ],
+)
+def test_extended_relative_days(expression: str, expected: date) -> None:
+    assert parse(expression, today=REFERENCE) == expected
